@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from "js-cookie"
 
 const api = axios.create({
   baseURL: `http://127.0.0.1:8000/api/`,
@@ -13,26 +14,42 @@ export const handleCartResponse = (dispatch, response) => {
   }, 500)
 }
 
-export const fetchCart = () => {
+export const createCart = () => {
   return (dispatch) => {
+    dispatch(requestCreateCart())
     dispatch(setCartIsLoading())
-    return api.get(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00`)
+    return api.post(`cart`)
+      .then((response) => {
+        Cookies.set("shopping-cart-id", response.data.data.id)
+        return response
+      })
       .then((response) => handleCartResponse(dispatch, response))
   }
 }
 
-export const removeItemFromCart = (cartItem) => {
+export const fetchCart = (cartId) => {
   return (dispatch) => {
+    dispatch(requestCart())
     dispatch(setCartIsLoading())
-    return api.delete(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00/item/${cartItem.id}`)
+    return api.get(`cart/${cartId}`)
       .then((response) => handleCartResponse(dispatch, response))
   }
 }
 
-export const addItemToCart = (product, qty) => {
+export const removeItemFromCart = (cartId, cartItem) => {
   return (dispatch) => {
+    dispatch(requestRemoveItem())
     dispatch(setCartIsLoading())
-    return api.post(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00/item`, {
+    return api.delete(`cart/${cartId}/item/${cartItem.id}`)
+      .then((response) => handleCartResponse(dispatch, response))
+  }
+}
+
+export const addItemToCart = (cartId, product, qty) => {
+  return (dispatch) => {
+    dispatch(requestAddItem())
+    dispatch(setCartIsLoading())
+    return api.post(`cart/${cartId}/item`, {
       product_id: product.product_id,
       qty,
     })
@@ -40,15 +57,36 @@ export const addItemToCart = (product, qty) => {
   }
 }
 
-export const updateCartItem = (cartItem, qty) => {
+export const updateCartItem = (cartId, cartItem, qty) => {
   return (dispatch) => {
+    dispatch(requestUpdateItem())
     dispatch(setCartIsLoading())
-    return api.put(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00/item/${cartItem.id}`, {
+    return api.put(`cart/${cartId}/item/${cartItem.id}`, {
       qty,
     })
       .then((response) => handleCartResponse(dispatch, response))
   }
 }
+
+export const requestCart = () => ({
+  type: "REQUEST_CART"
+})
+
+export const requestCreateCart = () => ({
+  type: "REQUEST_CREATE_CART"
+})
+
+export const requestUpdateItem = () => ({
+  type: "REQUEST_UPDATE_ITEM"
+})
+
+export const requestRemoveItem = () => ({
+  type: "REQUEST_REMOVE_ITEM"
+})
+
+export const requestAddItem = () => ({
+  type: "REQUEST_ADD_ITEM"
+})
 
 export const setCartIsLoading = () => ({
   type: "CART_IS_LOADING"

@@ -4,12 +4,6 @@ const cart = (state = {}, action) => {
   switch(action.type) {
     case "SET_CART":
       return Object.assign({}, state, action.cart)
-    case "UPDATE_CART":
-    case "REMOVE_ITEM":
-      return {
-        ...state,
-        items: state.items.filter((item, i) => i !== action.index)
-      }
     case "CART_IS_LOADING":
       return {
         ...state,
@@ -20,6 +14,11 @@ const cart = (state = {}, action) => {
         ...state,
         is_loading: false,
       }
+    case "REQUEST_CART":
+    case "REQUEST_CREATE_CART":
+    case "REQUEST_UPDATE_ITEM":
+    case "REQUEST_REMOVE_ITEM":
+    case "REQUEST_ADD_ITEM":
     default:
       return state
   }
