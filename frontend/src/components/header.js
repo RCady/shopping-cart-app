@@ -13,7 +13,6 @@ const Header = ({ siteTitle }) => (
       </Link>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/">Products</Nav.Link>
-        <Nav.Link as={Link} to="/cart">My Cart</Nav.Link>
       </Nav>
     </Container>
   </Navbar>
