@@ -13,7 +13,7 @@ import { removeItemFromCart } from "../state/actions"
 
 const Cart = ({ cart }) => {
   const cartItems = useSelector((state) => state.cart.items)
-  const total = useSelector((state) => state.cart.total)
+  const total_price = useSelector((state) => state.cart.total_price)
   const dispatch = useDispatch()
 
   return (
@@ -37,7 +37,7 @@ const Cart = ({ cart }) => {
           <Row className="font-weight-bold">
             <Col md="5"></Col>
             <Col xs="6" md="4">Total</Col>
-            <Col xs="6" md="3" className="text-right">{ formatCurrency(total) }</Col>
+            <Col xs="6" md="3" className="text-right">{ formatCurrency(total_price) }</Col>
           </Row>
         </Card.Body>
       </Card>
