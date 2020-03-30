@@ -11,6 +11,7 @@ exports.sourceNodes = (
     const nodeContent = JSON.stringify(product)
     const nodeData = Object.assign({}, product, {
       id: nodeId,
+      product_id: product.id,
       parent: null,
       children: [],
       internal: {
