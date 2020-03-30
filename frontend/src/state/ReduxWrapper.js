@@ -1,53 +1,34 @@
 import React from "react"
 import { Provider } from "react-redux"
-import { createStore } from "redux"
+import thunkMiddleware from "redux-thunk"
+import { createStore, applyMiddleware, compose } from "redux"
+import { fetchCart } from "./actions"
 import rootReducer from "./reducers"
 
 const initialState = {
   cart: {
-    items: [
-      {
-        id: 231,
-        product: {
-          id: 1,
-          name: "Hello World",
-          price: 24.99,
-        },
-        qty: 2,
-        line_total: 24.99,
-      },
-      {
-        id: 232,
-        product: {
-          id: 1,
-          name: "Hello World 2",
-          price: 24.99,
-        },
-        qty: 1,
-        line_total: 24.99,
-      },
-      {
-        id: 233,
-        product: {
-          id: 1,
-          name: "Hello World 3",
-          price: 25.99,
-        },
-        qty: 2,
-        line_total: 24.99,
-      }
-    ],
-    total: 0
+    id: null,
+    items: [],
+    total_items: 0,
+    total_price: 0,
+    created_at: null,
+    updated_at: null,
   }
 }
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+  rootReducer,
+  initialState,
+  composeEnhancers(applyMiddleware(
+    thunkMiddleware
+  ))
+)
+
+store.dispatch(fetchCart()).then(() => console.log('Hello World'))
+
 export default ({ element }) => (
   <Provider
-    store={
-      createStore(
-        rootReducer,
-        initialState,
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-      )
-    }>{ element }</Provider>
+    store={store}>{ element }</Provider>
 )
