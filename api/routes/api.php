@@ -15,3 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('products', 'ProductController')->only(['index', 'show']);
+Route::get('cart', 'CartController@index');
+Route::post('/cart/add', 'CartController@addToCart');
+Route::post('/cart/item/{id}/delete', 'CartController@removeFromCart');
+Route::post('/cart/item/{id}/update', 'CartController@updateCartItem');
