@@ -19,7 +19,7 @@ const AddToCart = ({ product }) => {
     <div className="mt-auto">
       <Form.Group as={ Row } className="d-flex align-items-bottom mb-2">
         <Col xs="6" md="7" className="mb-2">
-          <QtySelector initialValue={1} onQtyUpdate={ (qty) => setQty(qty) } />
+          <QtySelector value={qty} onQtyUpdate={ (qty) => setQty(qty) } />
         </Col>
         <Col xs="6" md="5">
           <Button variant="primary" block className="mt-auto" onClick={ () => dispatch(addItemToCart(product, qty)) }>Add to Cart</Button>
