@@ -13,6 +13,7 @@ const initialState = {
     total_price: 0,
     created_at: null,
     updated_at: null,
+    is_loading: true,
   }
 }
 
@@ -26,7 +27,7 @@ const store = createStore(
   ))
 )
 
-store.dispatch(fetchCart()).then(() => console.log('Hello World'))
+store.dispatch(fetchCart())
 
 export default ({ element }) => (
   <Provider
