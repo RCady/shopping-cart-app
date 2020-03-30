@@ -37,8 +37,18 @@ export const fetchCart = () => {
 
     dispatch(requestCart())
     dispatch(setCartIsLoading())
-    return api.get(`cart/${cartId}`)
-      .then((response) => handleCartResponse(dispatch, response))
+    return new Promise((resolve, reject) => {
+      api.get(`cart/${cartId}`)
+        .then((response) => {
+          handleCartResponse(dispatch, response)
+          resolve()
+        })
+        .catch((error) => {
+          dispatch(requestCartFail())
+          dispatch(createCart())
+          reject()
+        })
+    })
   }
 }
 
@@ -73,6 +83,10 @@ export const updateCartItem = (cartId, cartItem, qty) => {
       .then((response) => handleCartResponse(dispatch, response))
   }
 }
+
+export const requestCartFail = () => ({
+  type: "REQUEST_CART_FAIL"
+})
 
 export const requestCart = () => ({
   type: "REQUEST_CART"

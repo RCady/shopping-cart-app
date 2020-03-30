@@ -15,6 +15,7 @@ const cart = (state = {}, action) => {
         is_loading: false,
       }
     case "REQUEST_CART":
+    case "REQUEST_CART_FAIL":
     case "REQUEST_CREATE_CART":
     case "REQUEST_UPDATE_ITEM":
     case "REQUEST_REMOVE_ITEM":
