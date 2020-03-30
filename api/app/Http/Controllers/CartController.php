@@ -83,12 +83,12 @@ class CartController extends Controller
             'qty' => 'required|integer'
         ]);
 
-        $cartItem->qty = $request->get('qty');
-        $cartItem->save();
-
+        $cartItem->update([
+            'qty' => $request->get('qty')
+        ]);
+        $cart->push();
 
         $cart->refresh();
-        $cart->load('items');
         return response()->json([ 'data' => $cart ]);
     }
 }
