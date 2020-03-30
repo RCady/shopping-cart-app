@@ -16,3 +16,5 @@
 The API is accessible at `http://localhost:8001/api`
 
 The Gatsby frontend is accessible at `http://localhost:8000`
+
+Copyright 2020 Ryan Cady All rights served
