@@ -1,10 +1,14 @@
 import axios from 'axios'
 
+const api = axios.create({
+  baseURL: `http://127.0.0.1:8000/api/`
+})
+
 export const fetchCart = () => {
   return (dispatch) => {
     dispatch(requestCart())
 
-    return axios.get(`http://127.0.0.1/api/cart`)
+    return api.get(`cart`)
       .then((response) => response.data)
       .then((data) => dispatch(setCart(data.data)))
   }
