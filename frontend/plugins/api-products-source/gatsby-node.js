@@ -5,7 +5,7 @@ exports.sourceNodes = (
 ) => {
   const { createNode } = actions
 
-  const url = 'http://127.0.0.1:8000/api/products'
+  const url = 'http://localhost:8001/api/products'
   const createProductNodeData = product => {
     const nodeId = createNodeId(`product-${product.id}`)
     const nodeContent = JSON.stringify(product)
