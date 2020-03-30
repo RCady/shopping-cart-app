@@ -6,14 +6,16 @@ const api = axios.create({
 })
 
 export const handleCartResponse = (dispatch, response) => {
-  dispatch(setCart(response.data.data))
-  dispatch(setCartIsLoaded())
+  // Add a delay to simulate loading experience
+  setTimeout(() => {
+    dispatch(setCart(response.data.data))
+    dispatch(setCartIsLoaded())
+  }, 500)
 }
 
 export const fetchCart = () => {
   return (dispatch) => {
     dispatch(setCartIsLoading())
-
     return api.get(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00`)
       .then((response) => handleCartResponse(dispatch, response))
   }
@@ -21,6 +23,7 @@ export const fetchCart = () => {
 
 export const removeItemFromCart = (cartItem) => {
   return (dispatch) => {
+    dispatch(setCartIsLoading())
     return api.delete(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00/item/${cartItem.id}`)
       .then((response) => handleCartResponse(dispatch, response))
   }
@@ -28,6 +31,7 @@ export const removeItemFromCart = (cartItem) => {
 
 export const addItemToCart = (product, qty) => {
   return (dispatch) => {
+    dispatch(setCartIsLoading())
     return api.post(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00/item`, {
       product_id: product.product_id,
       qty,
@@ -38,6 +42,7 @@ export const addItemToCart = (product, qty) => {
 
 export const updateCartItem = (cartItem, qty) => {
   return (dispatch) => {
+    dispatch(setCartIsLoading())
     return api.put(`cart/c00b36af-b750-4f76-bc24-03fabd9f5f00/item/${cartItem.id}`, {
       qty,
     })

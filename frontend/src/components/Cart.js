@@ -11,6 +11,7 @@ import CartCollection from "./CartCollection"
 import CartTotals from "./CartTotals"
 
 const Cart = ({ cart }) => {
+  const isLoading = useSelector((state) => state.cart.is_loading)
   const cartItems = useSelector((state) => state.cart.items)
   const total = useSelector((state) => state.cart.total_price)
 
@@ -31,7 +32,11 @@ const Cart = ({ cart }) => {
       </Card>
       <Row>
         <Col className="text-right mt-2">
-          <Button variant="primary" block>Checkout</Button>
+          <Button
+            variant="primary"
+            disabled={ isLoading }
+            block
+          >{ isLoading ? "Loading..." : "Checkout" }</Button>
         </Col>
       </Row>
     </div>

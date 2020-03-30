@@ -10,15 +10,15 @@ const cart = (state = {}, action) => {
         ...state,
         items: state.items.filter((item, i) => i !== action.index)
       }
-    case "SET_CART_IS_LOADING":
+    case "CART_IS_LOADING":
       return {
         ...state,
-        isLoading: true,
+        is_loading: true,
       }
-    case "SET_CART_IS_LOADED":
+    case "CART_IS_LOADED":
       return {
         ...state,
-        isLoading: false,
+        is_loading: false,
       }
     default:
       return state
