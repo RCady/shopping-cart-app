@@ -8,21 +8,23 @@ class CartObserver
 {
     public function creating(Cart $cart)
     {
-        $this->setTotal($cart);
+        $cart->{$cart->getKeyName()} = (string) \Str::uuid();
+        $this->setTotals($cart);
     }
 
     public function updating(Cart $cart)
     {
-        $this->setTotal($cart);
+        $this->setTotals($cart);
     }
 
     public function saving(Cart $cart)
     {
-        $this->setTotal($cart);
+        $this->setTotals($cart);
     }
 
-    protected function setTotal(Cart $cart)
+    protected function setTotals(Cart $cart)
     {
+        $cart->load('items');
         $total_price = 0;
         $total_items = 0;
         foreach ($cart->items as $item) {

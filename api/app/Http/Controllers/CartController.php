@@ -22,9 +22,10 @@ class CartController extends Controller
                 'product_id' => $request->get('product_id'),
                 'qty' => $request->get('qty') ?? 1,
             ]);
-            $cart->load('items');
+
         }
 
+        $cart->refresh();
         return response()->json([ 'data' => $cart ]);
     }
 
@@ -56,15 +57,16 @@ class CartController extends Controller
             ]);
         }
 
-        $cart->load('items');
+        $cart->push();
         return response()->json([ 'data' => $cart ]);
     }
 
     public function deleteCartItem(Request $request, Cart $cart, CartItem $cartItem)
     {
-        $cartItem->delete();
+        $cart->items()->where('id', $cartItem->id)->delete();
+        $cart->push();
 
-        $cart->load('items');
+        $cart->refresh();
         return response()->json([ 'data' => $cart ]);
     }
 
@@ -84,6 +86,8 @@ class CartController extends Controller
         $cartItem->qty = $request->get('qty');
         $cartItem->save();
 
+
+        $cart->refresh();
         $cart->load('items');
         return response()->json([ 'data' => $cart ]);
     }
