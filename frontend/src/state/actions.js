@@ -27,8 +27,14 @@ export const createCart = () => {
   }
 }
 
-export const fetchCart = (cartId) => {
+export const fetchCart = () => {
   return (dispatch) => {
+    const cartId = Cookies.get("shopping-cart-id")
+
+    if (typeof cartId === 'undefined') {
+      return dispatch(createCart())
+    }
+
     dispatch(requestCart())
     dispatch(setCartIsLoading())
     return api.get(`cart/${cartId}`)

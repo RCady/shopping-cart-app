@@ -2,13 +2,12 @@ import React from "react"
 import { Provider } from "react-redux"
 import thunkMiddleware from "redux-thunk"
 import { createStore, applyMiddleware, compose } from "redux"
-import { createCart, fetchCart } from "./actions"
+import { fetchCart } from "./actions"
 import rootReducer from "./reducers"
-import Cookies from "js-cookie"
 
 const initialState = {
   cart: {
-    id: Cookies.get("shopping-cart-id"),
+    id: "",
     items: [],
     total_items: 0,
     total_price: 0,
@@ -28,11 +27,7 @@ const store = createStore(
   ))
 )
 
-if (typeof initialState.cart.id === "undefined") {
-  store.dispatch(createCart())
-} else {
-  store.dispatch(fetchCart(initialState.cart.id))
-}
+store.dispatch(fetchCart(initialState.cart.id))
 
 export default ({ element }) => (
   <Provider
