@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Cart;
+use App\Cart\CartItem;
+use App\Observers\CartObserver;
+use App\Observers\CartItemObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Cart::observe(CartObserver::class);
+        CartItem::observe(CartItemObserver::class);
     }
 }

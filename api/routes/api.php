@@ -15,4 +15,3 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('products', 'ProductController')->only(['index', 'show']);
-Route::resource('carts', 'CartController')->only(['index', 'update']);
