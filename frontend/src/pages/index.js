@@ -3,11 +3,17 @@ import { graphql } from "gatsby"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 
+import Cart from "../components/Cart"
 import Layout from "../components/layout"
 import ProductCard from "../components/ProductCard"
 
 const IndexPage = ({ data }) => (
   <Layout>
+    <Row>
+      <Col xs="12" className="mt-4">
+        <Cart />
+      </Col>
+    </Row>
     <Row className="row-eq-height mt-4">
       {
         data.allProduct.edges.map(edge => (
@@ -27,6 +33,7 @@ export const query = graphql`
       edges {
         node {
           id
+          product_id
           name
           short_description
           description
