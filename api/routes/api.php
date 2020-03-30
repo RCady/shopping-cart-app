@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('products', 'ProductController')->only(['index', 'show']);
-Route::get('cart', 'CartController@index');
-Route::post('/cart/add', 'CartController@addToCart');
-Route::post('/cart/item/{id}/delete', 'CartController@removeFromCart');
-Route::post('/cart/item/{id}/update', 'CartController@updateCartItem');
+Route::apiResource('products', 'ProductController')->only(['index', 'show']);
+Route::apiResource('cart', 'CartController')->only(['show', 'store']);
+Route::post('cart/{cart}/item', 'CartController@addItemToCart');
+Route::put('cart/{cart}/item/{cartItem}', 'CartController@updateCartItem');
+Route::delete('cart/{cart}/item/{cartItem}', 'CartController@deleteCartItem');

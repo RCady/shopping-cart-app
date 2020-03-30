@@ -12,7 +12,3 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route::get('cart', 'CartController@index');
-// Route::post('/cart/add', 'CartController@addToCart');
-// Route::post('/cart/item/{id}/delete', 'CartController@removeFromCart');
-// Route::post('/cart/item/{id}/update', 'CartController@updateCartItem');

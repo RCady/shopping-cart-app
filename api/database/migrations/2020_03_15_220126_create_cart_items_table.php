@@ -15,7 +15,7 @@ class CreateCartItemsTable extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cart_id');
+            $table->uuid('cart_id');
             $table->unsignedBigInteger('product_id');
             $table->integer('qty')->default(0);
             $table->float('line_total')->default(0);

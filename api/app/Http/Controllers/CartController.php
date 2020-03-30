@@ -9,74 +9,62 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    public function __construct()
+    public function store(Request $request)
     {
-        // If a cart doesn't exist, we should create one
-        $this->middleware(function ($request, $next) {
-            if (!session()->has('cart')) {
-                $cart = Cart::create();
-            } else {
-                $sessionCart = session()->get('cart');
-                $cart = Cart::find($sessionCart->id);
-                if (!$cart) {
-                    $cart = Cart::create();
-                }
-            }
+        $cart = Cart::create();
+        $request->validate([
+            'product_id' => 'exists:products,id',
+            'qty' => 'integer'
+        ]);
 
-            session(['cart' => $cart]);
-            return $next($request);
-        });
-    }
+        if ($request->has('product_id')) {
+            $cart->items()->create([
+                'product_id' => $request->get('product_id'),
+                'qty' => $request->get('qty') ?? 1,
+            ]);
+            $cart->load('items');
+        }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $cart = $request->session()->get('cart');
         return response()->json([ 'data' => $cart ]);
     }
 
-    public function addToCart(Request $request)
+    public function show(Request $request, Cart $cart)
     {
-        $cart = $request->session()->get('cart');
+        return response()->json([ 'data' => $cart ]);
+    }
 
-        if ($request->has('product_id')) {
-            $qty = 1;
-            if ($request->has('qty')) {
-                $qty = $request->get('qty');
-            }
+    public function addItemToCart(Request $request, Cart $cart)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'qty' => 'integer'
+        ]);
 
-            $existingItem = $cart->items->where('product_id', $request->product_id)->first();
-            if ($existingItem) {
-                $existingItem->qty += $qty;
-                $existingItem->save();
-            } else {
-                $cart->items()->create([
-                    'product_id' => $request->product_id,
-                    'qty' => $qty
-                ]);
-            }
-
-            $cart->save();
+        $qty = 1;
+        if ($request->has('qty')) {
+            $qty = $request->get('qty');
         }
+
+        $existingItem = $cart->items->where('product_id', $request->product_id)->first();
+        if ($existingItem) {
+            $existingItem->qty += $qty;
+            $existingItem->save();
+        } else {
+            $cart->items()->create([
+                'product_id' => $request->product_id,
+                'qty' => $qty
+            ]);
+        }
+
+        $cart->load('items');
 
         $cart = Cart::find($cart->id);
         return response()->json([ 'data' => $cart ]);
     }
 
-    public function removeFromCart(Request $request, $id)
+    public function deleteCartItem(Request $request, Cart $cart, CartItem $cartItem)
     {
-        $cart = $request->session()->get('cart');
-        if ($id) {
-            $item = $cart->items->where('id', $id)->first();
-            if ($item) {
-                $item->delete();
-                $cart->save();
-            }
-        }
+        $cartItem->delete();
 
         $cart = Cart::find($cart->id);
         return response()->json([ 'data' => $cart ]);
@@ -89,18 +77,14 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateCartItem(Request $request, $id)
+    public function updateCartItem(Request $request, Cart $cart, CartItem $cartItem)
     {
-        $cart = $request->session()->get('cart');
-        if ($id && $request->has('qty')) {
-            $item = $cart->items->where('id', $id)->first();
-            if ($item) {
-                $item->qty = $request->get('qty');
-                $item->save();
-            }
+        if ($request->has('qty')) {
+            $cartItem->qty = $request->get('qty');
+            $cartItem->save();
+            $cart->load('items');
         }
 
-        $cart = Cart::find($cart->id);
         return response()->json([ 'data' => $cart ]);
     }
 }
