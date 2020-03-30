@@ -57,8 +57,6 @@ class CartController extends Controller
         }
 
         $cart->load('items');
-
-        $cart = Cart::find($cart->id);
         return response()->json([ 'data' => $cart ]);
     }
 
@@ -66,7 +64,7 @@ class CartController extends Controller
     {
         $cartItem->delete();
 
-        $cart = Cart::find($cart->id);
+        $cart->load('items');
         return response()->json([ 'data' => $cart ]);
     }
 
@@ -79,12 +77,14 @@ class CartController extends Controller
      */
     public function updateCartItem(Request $request, Cart $cart, CartItem $cartItem)
     {
-        if ($request->has('qty')) {
-            $cartItem->qty = $request->get('qty');
-            $cartItem->save();
-            $cart->load('items');
-        }
+        $request->validate([
+            'qty' => 'required|integer'
+        ]);
 
+        $cartItem->qty = $request->get('qty');
+        $cartItem->save();
+
+        $cart->load('items');
         return response()->json([ 'data' => $cart ]);
     }
 }
