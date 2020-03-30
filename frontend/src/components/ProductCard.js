@@ -4,7 +4,8 @@ import Card from "react-bootstrap/Card"
 import { formatCurrency } from "../helpers"
 import AddToCart from "./AddToCart"
 
-const ProductCard = ({ product }) => (
+const ProductCard = ({ product }) => {
+  return(
   <Card className="h-100">
     <Card.Body className="d-flex flex-column">
       <Card.Title className="text-small">{ product.name }</Card.Title>
@@ -13,6 +14,6 @@ const ProductCard = ({ product }) => (
       <AddToCart product={ product } />
     </Card.Body>
   </Card>
-)
+)}
 
 export default ProductCard

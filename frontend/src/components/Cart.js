@@ -1,5 +1,5 @@
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 
 // Bootstrap Components
 import Card from "react-bootstrap/Card"
@@ -7,14 +7,12 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 
-import { formatCurrency } from "../helpers"
-import CartItem from "./CartItem"
-import { removeItemFromCart } from "../state/actions"
+import CartCollection from "./CartCollection"
+import CartTotals from "./CartTotals"
 
 const Cart = ({ cart }) => {
   const cartItems = useSelector((state) => state.cart.items)
-  const total_price = useSelector((state) => state.cart.total_price)
-  const dispatch = useDispatch()
+  const total = useSelector((state) => state.cart.total_price)
 
   return (
     <div>
@@ -22,23 +20,13 @@ const Cart = ({ cart }) => {
         <Card.Header>Your Cart</Card.Header>
         <Card.Body>
           {
-            cartItems.map((cartItem, index) => (
-              <div key={ cartItem.product.id }>
-                <CartItem
-                  cartItem={ cartItem }
-                  index={ index }
-                  qty={ cartItem.qty }
-                  onRemoveItem={ (index) => dispatch(removeItemFromCart(index)) }
-                />
-                <hr />
-              </div>
-            ))
+            cartItems.length > 0 ? (
+              <>
+                <CartCollection cartItems={ cartItems } />
+                <CartTotals total={ total } />
+              </>
+              ) : <h3 className="text-center text-muted">Your Cart is Empty</h3>
           }
-          <Row className="font-weight-bold">
-            <Col md="5"></Col>
-            <Col xs="6" md="4">Total</Col>
-            <Col xs="6" md="3" className="text-right">{ formatCurrency(total_price) }</Col>
-          </Row>
         </Card.Body>
       </Card>
       <Row>
