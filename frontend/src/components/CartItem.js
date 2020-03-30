@@ -20,7 +20,7 @@ const CartItem = ({ cartItem }) => {
         <h5 className="mb-0">{ product.name }</h5>
       </Col>
       <Col xs="6" md="4">
-        <QtySelector value={ cartItem.qty } onQtyUpdate={ (qty) => dispatch(updateCartItem(cartItem, qty)) } />
+        <QtySelector value={ cartItem.qty } disabled={ true } onQtyUpdate={ (qty) => dispatch(updateCartItem(cartItem, qty)) } />
       </Col>
       <Col xs="6" md="3" className="text-right">
         <div className="mb-0">{ formatCurrency(cartItem.line_total) }</div>

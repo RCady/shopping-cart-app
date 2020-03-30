@@ -17,7 +17,7 @@ const Cart = ({ cart }) => {
 
   return (
     <div>
-      <Card>
+      <Card className={ isLoading ? "is-loading" : "" }>
         <Card.Header>Your Cart</Card.Header>
         <Card.Body>
           {
