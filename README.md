@@ -1,4 +1,5 @@
 ## A simple shopping cart application
+**NOTE:** Docker integration is a work-in-progress.
 
 ### Setting up the project for development
 1. `git clone git@github.com:RCady/shopping-cart-app.git`
